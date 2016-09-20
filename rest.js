@@ -10,7 +10,11 @@ module.exports = {
                 console.log(`Process API ${ctx.request.method} ${ctx.request.url}...`);
                 ctx.rest = (data) => {
                     ctx.response.type = 'application/json';
-                    ctx.response.body = data;
+                    ctx.response.body = {
+                        code: 200,
+                        message: '',
+                        data: data
+                    };
                 }
                 try {
                     await next();
