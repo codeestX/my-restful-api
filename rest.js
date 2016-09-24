@@ -27,6 +27,40 @@ module.exports = {
                         message: e.message || ''
                     };
                 }
+            } else if (ctx.request.path.startsWith('/apk/')) {
+                console.log(`Process APK ${ctx.request.method} ${ctx.request.url}...`);
+                ctx.rest = (data) => {
+                    ctx.response.type = 'application/octet-stream';
+                    ctx.response.body = data;
+                }
+                try {
+                    await next();
+                } catch (e) {
+                    console.log('Process API error...');
+                    ctx.response.status = 400;
+                    ctx.response.type = 'application/json';
+                    ctx.response.body = {
+                        code: e.code || 'internal:unknown_error',
+                        message: e.message || ''
+                    };
+                }
+            } else if (ctx.request.path.startsWith('/img/')) {
+                console.log(`Process IMG ${ctx.request.method} ${ctx.request.url}...`);
+                ctx.rest = (data) => {
+                    ctx.response.type = '.jpg';
+                    ctx.response.body = data;
+                }
+                try {
+                    await next();
+                } catch (e) {
+                    console.log('Process API error...');
+                    ctx.response.status = 400;
+                    ctx.response.type = 'application/json';
+                    ctx.response.body = {
+                        code: e.code || 'internal:unknown_error',
+                        message: e.message || ''
+                    };
+                }
             } else {
                 await next();
             }
